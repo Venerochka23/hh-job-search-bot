@@ -32,6 +32,36 @@ MYSQL_PASSWORD=пароль_для_базы_данных
 MYSQL_DB=имя_базы_данных
 TELEGRAM_CHAT_ID=ID_вашего_чата
 
+Схема MySQL: 
+-- Таблица найденных вакансий
+CREATE TABLE vacancies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    hh_id BIGINT UNIQUE NOT NULL,
+    title VARCHAR(500),
+    company VARCHAR(500),
+    salary VARCHAR(100),
+    experience VARCHAR(50),
+    published_at DATE,
+    responses_count INT,
+    url VARCHAR(500),
+    snippet TEXT,
+    accredited_it BOOLEAN DEFAULT FALSE,
+    first_seen_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Таблица откликов и их статусов
+CREATE TABLE applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vacancy_id INT NOT NULL,
+    status VARCHAR(20) DEFAULT 'new',   -- new / skipped / pending_letter / letter_ready / responded / waiting / rejected / invited
+    cover_letter TEXT,
+    applied_at DATETIME NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (vacancy_id) REFERENCES vacancies(id)
+);
+
+
+
 Установка и запуск: 
 ```bash
 git clone <repo_url>
